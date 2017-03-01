@@ -3,6 +3,23 @@ from mfs.mfs import MFS
 
 if __name__ == '__main__':
     mfs = MFS()
+    help_text = """
+    Help:
+    /---------------------------------------------------------\\
+    |  CMD  |      Usage      |            Example           |
+    ----------------------------------------------------------
+    |  ls   |   ls [path]     |      q                        |
+    | mkdir |   mkdir [path]  |                              |
+    |  pwd  |   pwd           |                              |
+    | tree  |   tree [path]   |                              |
+    |  cd   |   cd [path]     |                              |
+    \---------------------------------------------------------/
+    
+Input your command :
+
+    """
+
+    print(help_text)
 
     while True:
         command_input = input().split(' ')
@@ -23,3 +40,4 @@ if __name__ == '__main__':
                 print('Unknown command')
         except Exception as e:
             print(CommandHelp[cmd])
+            print(print(e))

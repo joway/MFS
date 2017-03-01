@@ -1,6 +1,5 @@
-import os
-
 import operator
+import os
 from functools import reduce
 
 from mfs.file import Directory
@@ -25,18 +24,34 @@ class MFS(object):
     def cd(self, path='.'):
         self.work_path = self.parse_rpath(path)
 
-    def ls(self, path='.'):
-        self.display_files(self.root['root'])
+    def touch(self, path='.', filename=''):
+        apath = self.parse_rpath(path)
 
-    def mkdir(self, path):
-        route = self.split_path(path)
+    def ls(self, rpath='.'):
+        apath = self.parse_rpath(rpath)
+        route = self.split_path(apath)
+        target_root = self.absolute_root(route)
+        self.display_files(target_root)
+
+    def mkdir(self, rpath):
+        apath = self.parse_rpath(rpath)
+        route = self.split_path(apath)
         self.absolute_root(route[:-1])[route[-1]] = Directory()
 
     def cp(self, source, target):
         pass
 
-    def tree(self, path='.'):
-        pass
+    def tree(self, path='.', depth=0):
+        route = self.split_path(self.parse_rpath(path))
+        target_root = self.absolute_root(route)
+        return self.tree_display(target_root)
+
+    def tree_display(self, t, depth=0):
+        for k in t.keys():
+            print("|%s|--  %s" % ("".join(depth * ["    "]), k))
+            depth += 1
+            self.tree_display(t[k], depth)
+            depth -= 1
 
     def read_file(self, file_path):
         pass
@@ -55,6 +70,7 @@ class MFS(object):
         return result
 
     def absolute_root(self, dir_list):
+        dir_list = [x for x in dir_list if x]
         return reduce(operator.getitem, dir_list, self.root)
 
     def parent_root(self, apath):
@@ -64,7 +80,7 @@ class MFS(object):
         return self.absolute_root(route[:-1])
 
     def parent_path(self, path):
-        return os.path.dirname(path)
+        return os.path.dirname(path) + '/'
 
     def parse_rpath(self, rpath: str):
         """
@@ -85,10 +101,10 @@ class MFS(object):
                     break
             return target_path
         else:
-            return '%s/%s' % (self.work_path, rpath)
+            return '%s%s/' % (self.work_path, rpath)
 
     def display_files(self, leaf):
         template = ''
         for l in leaf:
-            template += str(l) + ' '
+            template += str(l) + '/ '
         print(template)
