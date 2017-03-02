@@ -6,7 +6,7 @@ def Directory():
 
 
 class File(object):
-    def __init__(self, filename: str, path: str, data='', permission: str = '0666'):
+    def __init__(self, filename, path, data='', permission = '0666'):
         self.filename = filename
         self.path = path
         self.data = data

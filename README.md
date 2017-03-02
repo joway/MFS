@@ -2,9 +2,19 @@
 
 Memory File System
 
+## Dependency
+
+- Python3.5/3.6
+
 ## Run
 
     python main.py
+
+
+## Tests
+
+    python tests.py
+
 
 ## Usage
 
@@ -30,9 +40,3 @@ Memory File System
 由于纯粹基于内存进行快速随机存储 , 且对文件夹中内容无排序需求, 树深度(目录层级)一般情况不会过深, 故而简单地采用一棵的自由树来组织目录结构。
 
 每个子节点有两种类型 : Directory 和 File , 根节点自身是一个 Directory。
-
-
-## Tests
-
-    python tests.py
-

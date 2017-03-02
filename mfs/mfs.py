@@ -3,8 +3,8 @@ import operator
 import os
 from functools import reduce
 
-from mfs.exceptions import MFSException
-from mfs.file import Directory, File
+from .exceptions import MFSException
+from .file import Directory, File
 
 
 class MFS(object):
@@ -131,7 +131,7 @@ class MFS(object):
             path = path[:-1]
         return os.path.dirname(path)
 
-    def parse_rpath(self, rpath: str):
+    def parse_rpath(self, rpath):
         """
         :param rpath: relative path 
         :return: apath: absolute path 
