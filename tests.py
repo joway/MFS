@@ -61,8 +61,59 @@ class TestMFS(unittest.TestCase):
             self.mfs.cd('root')
             self.mfs.ls()
         output = stdout.getvalue().strip()
-        print(output)
         self.assertEqual('xxx/' in output, True)
+
+        with captured_stdout() as stdout:
+            self.mfs.cd('..')
+            self.mfs.ls()
+        output = stdout.getvalue().strip()
+        self.assertEqual('root/' in output, True)
+
+    def test_pwd(self):
+        with captured_stdout() as stdout:
+            self.mfs.mkdir('aaa')
+            self.mfs.mkdir('bbb')
+            self.mfs.pwd()
+        output = stdout.getvalue().strip()
+        self.assertEqual('aaa/' in output, True)
+        self.assertEqual('bbb/' in output, True)
+
+    def test_touch(self):
+        with captured_stdout() as stdout:
+            self.mfs.touch('test.py')
+            self.mfs.pwd()
+        output = stdout.getvalue().strip()
+        self.assertEqual('test.py' in output, True)
+
+    def test_cp(self):
+        with captured_stdout() as stdout:
+            self.mfs.mkdir('root')
+            self.mfs.mkdir('etc')
+            self.mfs.cd('root')
+            self.mfs.touch('test.py', '.')
+            self.mfs.cp_file('.', 'test.py', '/etc', 'main.py')
+            self.mfs.ls('/etc')
+        output = stdout.getvalue().strip()
+        self.assertEqual('main.py' in output, True)
+
+    def test_cpr(self):
+        with captured_stdout() as stdout:
+            self.mfs.mkdir('root')
+            self.mfs.cd('root')
+            self.mfs.touch('test.py', '.')
+            self.mfs.cp_dir('/root', '/etc')
+            self.mfs.ls('/etc')
+        output = stdout.getvalue().strip()
+        self.assertEqual('test.py' in output, True)
+
+    def test_read_and_write(self):
+        _data = 'today is my birthday'
+        self.mfs.mkdir('root')
+        self.mfs.cd('root')
+        self.mfs.touch('test.py', '.')
+        self.mfs.write_file('test.py', _data)
+        data = self.mfs.read_file('test.py')
+        self.assertEqual(data, _data)
 
 
 if __name__ == '__main__':

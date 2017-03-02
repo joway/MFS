@@ -1,0 +1,2 @@
+class MFSException(Exception):
+    pass
